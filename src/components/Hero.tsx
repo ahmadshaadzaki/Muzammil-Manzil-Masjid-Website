@@ -1,84 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Navigation, Calendar, ShieldCheck, Compass, HeartHandshake, Moon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { MOSQUE_INFO, FRIDAY_PRAYER_INFO } from '../data/mosqueData';
+import { getAuthenticHijriDate } from '../utils/hijriCalendar';
 
 interface HeroProps {
   onNavigateTo: (tab: string) => void;
   showUrdu: boolean;
 }
 
-// Utility function to generate formatted Gregorian and Islamic Hijri dates
-function getFormattedDates(offsetDays: number = 0) {
-  const today = new Date();
-  if (offsetDays !== 0) {
-    today.setDate(today.getDate() + offsetDays);
-  }
-
-  // Gregorian Formatting
-  const gregorianEn = new Intl.DateTimeFormat('en-US', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  }).format(today);
-
-  const gregorianUr = new Intl.DateTimeFormat('ur-IN', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  }).format(today);
-
-  // Hijri Formatting
-  let hijriEn = '';
-  let hijriUr = '';
-
-  try {
-    // English Islamic Umalqura calendar
-    const formatterEn = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-    const partsEn = formatterEn.formatToParts(today);
-    const day = partsEn.find((p) => p.type === 'day')?.value || '';
-    const month = partsEn.find((p) => p.type === 'month')?.value || '';
-    const year = partsEn.find((p) => p.type === 'year')?.value || '';
-    hijriEn = `${day} ${month} ${year} AH`;
-
-    // Urdu/Arabic Islamic Umalqura calendar
-    const formatterUr = new Intl.DateTimeFormat('ur-IN-u-ca-islamic-umalqura', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-    hijriUr = `${formatterUr.format(today)} هـ`;
-  } catch {
-    // Fallback if specific locale options are unsupported
-    try {
-      const formatterFallback = new Intl.DateTimeFormat('en-US-u-ca-islamic', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      });
-      hijriEn = `${formatterFallback.format(today)} AH`;
-      hijriUr = hijriEn;
-    } catch {
-      hijriEn = 'Safar 1448 AH';
-      hijriUr = 'صفر ۱۴۴۸ هـ';
-    }
-  }
-
-  return { gregorianEn, gregorianUr, hijriEn, hijriUr };
-}
-
 export const Hero: React.FC<HeroProps> = ({ onNavigateTo, showUrdu }) => {
   const [hijriOffset, setHijriOffset] = useState<number>(0);
-  const { gregorianEn, gregorianUr, hijriEn, hijriUr } = getFormattedDates(hijriOffset);
+  const [currentDateObj, setCurrentDateObj] = useState<Date>(new Date());
 
-  const currentGregorian = showUrdu ? gregorianUr : gregorianEn;
-  const currentHijri = showUrdu ? hijriUr : hijriEn;
+  // Automatic daily live date update (re-evaluates every minute so date & Hijri update at midnight)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDateObj(new Date());
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const hijriData = getAuthenticHijriDate(currentDateObj, hijriOffset);
+
+  const currentGregorian = showUrdu ? hijriData.gregorianUr : hijriData.gregorianEn;
+  const currentHijri = showUrdu ? hijriData.formattedUr : hijriData.formattedEn;
 
   return (
     <div className="relative bg-gradient-to-b from-emerald-950 via-emerald-900 to-emerald-950 text-emerald-50 pt-8 pb-12 sm:pt-12 sm:pb-16 overflow-hidden border-b border-emerald-800/80">
