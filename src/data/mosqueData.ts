@@ -5,7 +5,9 @@ export const MOSQUE_INFO = {
   nameUrdu: 'مسجد مزمل منزل',
   addressPlusCode: 'W34J+G9P',
   location: 'W34J+G9P, Dudhpur Road, Muzammil Manzil, Dodhpur, Aligarh, Uttar Pradesh 202001',
-  googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=W34J%2BG9P%2C+Dudhpur+Road%2C+Muzammil+Manzil%2C+Dodhpur%2C+Aligarh%2C+Uttar+Pradesh+202001',
+  googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=W34J%2BG9P%2C+Aligarh',
+  googleMapsSearchUrl: 'https://www.google.com/maps/search/?api=1&query=W34J%2BG9P%2C+Aligarh',
+  embedMapUrl: 'https://maps.google.com/maps?q=W34J%2BG9P%2C+Aligarh&t=&z=17&ie=UTF8&iwloc=&output=embed',
   coordinates: {
     lat: 27.90617,
     lng: 78.08078,

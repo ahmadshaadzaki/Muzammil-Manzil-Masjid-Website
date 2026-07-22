@@ -88,84 +88,50 @@ export const DirectionsMap: React.FC<{ isDarkMode?: boolean }> = ({ isDarkMode =
               {copied && <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">✓ Address copied to clipboard!</p>}
             </div>
 
-            {/* Custom Stylized Map Graphic Frame with Animated Custom Marker */}
-            <div className="relative rounded-2xl overflow-hidden border border-emerald-800/80 bg-gradient-to-br from-emerald-950 via-stone-900 to-emerald-950 text-white p-6 sm:p-8 space-y-5 shadow-inner">
+            {/* Embedded Live Google Map with Plus Code W34J+G9P */}
+            <div className="relative rounded-2xl overflow-hidden border border-emerald-800/80 bg-stone-900 text-white p-4 space-y-4 shadow-xl">
               
-              {/* Grid line background overlay simulating map grid */}
-              <div className="absolute inset-0 bg-[linear-gradient(to_right,#10b98115_1px,transparent_1px),linear-gradient(to_bottom,#10b98115_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-
-              {/* Map Road Stylized Graphic */}
-              <div className="absolute inset-0 opacity-20 pointer-events-none">
-                <svg className="w-full h-full" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 120 C 100 120, 150 60, 200 60 C 250 60, 300 180, 400 180" stroke="#f59e0b" strokeWidth="8" strokeDasharray="6 6" />
-                  <path d="M200 0 V 240" stroke="#10b981" strokeWidth="12" />
-                  <circle cx="200" cy="60" r="16" fill="#f59e0b" opacity="0.3" />
-                </svg>
-              </div>
-
               {/* Coordinates Badge */}
-              <div className="relative z-10 flex items-center justify-between">
+              <div className="flex items-center justify-between">
                 <span className="px-3 py-1 rounded-full bg-emerald-900/90 border border-emerald-700 text-amber-300 text-[11px] font-mono font-bold flex items-center gap-1.5 shadow-sm">
                   <LocateFixed className="w-3.5 h-3.5 text-amber-400" />
-                  <span>{MOSQUE_INFO.coordinates.lat}° N, {MOSQUE_INFO.coordinates.lng}° E ({MOSQUE_INFO.addressPlusCode})</span>
+                  <span>Plus Code: {MOSQUE_INFO.addressPlusCode} ({MOSQUE_INFO.coordinates.lat}° N, {MOSQUE_INFO.coordinates.lng}° E)</span>
                 </span>
-                <span className="text-[10px] text-stone-400 uppercase font-semibold">Dodhpur Precinct</span>
+                <span className="text-[10px] text-stone-400 uppercase font-semibold">Live Google Map</span>
               </div>
 
-              {/* CENTERPIECE: Custom Interactive Map Marker Pin */}
-              <div className="relative z-10 my-4 py-4 flex flex-col items-center justify-center">
-                <motion.div
-                  initial={{ y: -10 }}
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
-                  className="relative flex flex-col items-center group cursor-pointer"
-                  onClick={() => window.open(directDirectionsUrl, '_blank')}
-                >
-                  {/* Custom Pin Callout Popup */}
-                  <div className="mb-2 px-3 py-1.5 rounded-xl bg-amber-500 text-emerald-950 font-extrabold text-xs shadow-xl border border-amber-300 flex items-center gap-1.5 whitespace-nowrap group-hover:scale-105 transition-transform">
-                    <span className="w-2 h-2 rounded-full bg-emerald-900 animate-pulse" />
-                    <span>Muzammil Manzil Masjid</span>
-                    <ExternalLink className="w-3 h-3 text-emerald-950" />
-                  </div>
-
-                  {/* Pulsating Ring under Pin */}
-                  <div className="relative flex items-center justify-center">
-                    <div className="absolute w-12 h-12 rounded-full bg-amber-400/30 animate-ping" />
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 to-amber-300 p-0.5 shadow-lg flex items-center justify-center">
-                      <div className="w-full h-full rounded-full bg-emerald-950 flex items-center justify-center">
-                        <MapPin className="w-5 h-5 text-amber-400 fill-amber-400/20" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Pin Pointer Drop shadow */}
-                  <div className="w-4 h-1.5 bg-black/40 rounded-full blur-[2px] mt-1" />
-                </motion.div>
-                
-                <p className="text-[11px] text-emerald-300 font-serif text-center mt-1">
-                  Click custom marker pin to launch Google Maps turn-by-turn navigation
-                </p>
+              {/* Interactive Google Map Iframe centered on W34J+G9P */}
+              <div className="relative w-full h-64 sm:h-72 rounded-xl overflow-hidden border border-emerald-700/60 shadow-inner">
+                <iframe
+                  title="Muzammil Manzil Masjid Map Location"
+                  src={MOSQUE_INFO.embedMapUrl}
+                  className="w-full h-full border-0"
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
               </div>
 
-              <div className="relative z-10 space-y-2">
-                <h4 className="text-lg font-serif font-bold text-white">
-                  Muzammil Manzil Estate Courtyard
+              <div className="space-y-1.5">
+                <h4 className="text-base font-serif font-bold text-white flex items-center justify-between">
+                  <span>Muzammil Manzil Estate Courtyard</span>
+                  <span className="text-xs text-amber-400 font-mono">Plus Code: W34J+G9P</span>
                 </h4>
                 <p className="text-xs text-emerald-200 leading-relaxed">
-                  Located off the main Dodhpur Road. Enter the arched gateway of Muzammil Manzil estate; the mosque is positioned inside the quiet garden courtyard away from street noise.
+                  Located on Dudhpur Road. Enter the arched gateway of Muzammil Manzil estate; the mosque is inside the courtyard garden.
                 </p>
               </div>
 
               {/* Direct Get Directions Primary Button */}
-              <div className="relative z-10 pt-2 border-t border-emerald-800/80">
+              <div className="pt-2 border-t border-emerald-800/80">
                 <a
-                  href={directDirectionsUrl}
+                  href={MOSQUE_INFO.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-bold text-sm text-center shadow-lg hover:shadow-amber-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Navigation className="w-4 h-4 fill-emerald-950" />
-                  <span>Get Live Directions in Google Maps</span>
+                  <span>Open Live Navigation for "W34J+G9P" in Google Maps</span>
                   <ArrowUpRight className="w-4 h-4" />
                 </a>
               </div>
