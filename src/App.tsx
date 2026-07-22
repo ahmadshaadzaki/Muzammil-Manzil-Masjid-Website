@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronUp } from 'lucide-react';
 import { Navbar } from './components/Navbar';
@@ -16,6 +16,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<string>('daily-prayer-schedule');
   const [showUrdu, setShowUrdu] = useState<boolean>(false);
   const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
+  const isNavigatingRef = useRef<boolean>(false);
+  const navTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('theme');
@@ -50,16 +52,22 @@ export default function App() {
 
     const observerOptions = {
       root: null,
-      rootMargin: '-20% 0px -50% 0px',
+      rootMargin: '-25% 0px -45% 0px',
       threshold: 0,
     };
 
     const handleIntersect: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveTab(entry.target.id);
-        }
-      });
+      if (isNavigatingRef.current) return;
+      
+      // Find entry closest to upper center
+      const visibleEntries = entries.filter((e) => e.isIntersecting);
+      if (visibleEntries.length > 0) {
+        // Pick the top-most visible section
+        const topEntry = visibleEntries.reduce((prev, curr) =>
+          prev.boundingClientRect.top < curr.boundingClientRect.top ? prev : curr
+        );
+        setActiveTab(topEntry.target.id);
+      }
     };
 
     const observer = new IntersectionObserver(handleIntersect, observerOptions);
@@ -86,11 +94,21 @@ export default function App() {
   };
 
   const handleTabNavigate = (tabId: string) => {
+    isNavigatingRef.current = true;
     setActiveTab(tabId);
+    
+    if (navTimeoutRef.current) {
+      clearTimeout(navTimeoutRef.current);
+    }
+
     const el = document.getElementById(tabId) || document.getElementById(`${tabId}-section`);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
+
+    navTimeoutRef.current = setTimeout(() => {
+      isNavigatingRef.current = false;
+    }, 900);
   };
 
   const sectionVariant = {
