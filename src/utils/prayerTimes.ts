@@ -3,10 +3,8 @@ import { Coordinates, CalculationMethod, PrayerTimes, Madhab } from 'adhan';
 export interface SinglePrayerInfo {
   nameEn: string;
   nameUr: string;
-  adhan: string;
-  jamaat: string;
-  rawAdhanDate: Date;
-  rawJamaatDate: Date;
+  awwalWaqt: string;
+  rawDate: Date;
 }
 
 export interface DailyPrayerScheduleResult {
@@ -52,15 +50,6 @@ export function getDailyPrayerSchedule(
       hour12: true,
     });
 
-  const addMinutes = (d: Date, mins: number) => new Date(d.getTime() + mins * 60000);
-
-  // Jama'at iqamah timings
-  const fajrJamaat = addMinutes(pTimes.fajr, 20);
-  const dhuhrJamaat = addMinutes(pTimes.dhuhr, 15);
-  const asrJamaat = addMinutes(pTimes.asr, 15);
-  const maghribJamaat = addMinutes(pTimes.maghrib, 5);
-  const ishaJamaat = addMinutes(pTimes.isha, 15);
-
   const currentPrayerKey = pTimes.currentPrayer(date);
   const nextPrayerKey = pTimes.nextPrayer(date);
   const nextPrayerTimeObj = pTimes.timeForPrayer(nextPrayerKey);
@@ -81,10 +70,8 @@ export function getDailyPrayerSchedule(
     fajr: {
       nameEn: 'Fajr',
       nameUr: 'فجر',
-      adhan: formatTime(pTimes.fajr),
-      jamaat: formatTime(fajrJamaat),
-      rawAdhanDate: pTimes.fajr,
-      rawJamaatDate: fajrJamaat,
+      awwalWaqt: formatTime(pTimes.fajr),
+      rawDate: pTimes.fajr,
     },
     sunrise: {
       nameEn: 'Sunrise',
@@ -95,34 +82,26 @@ export function getDailyPrayerSchedule(
     dhuhr: {
       nameEn: 'Dhuhr',
       nameUr: 'ظہر',
-      adhan: formatTime(pTimes.dhuhr),
-      jamaat: formatTime(dhuhrJamaat),
-      rawAdhanDate: pTimes.dhuhr,
-      rawJamaatDate: dhuhrJamaat,
+      awwalWaqt: formatTime(pTimes.dhuhr),
+      rawDate: pTimes.dhuhr,
     },
     asr: {
       nameEn: 'Asr',
       nameUr: 'عصر',
-      adhan: formatTime(pTimes.asr),
-      jamaat: formatTime(asrJamaat),
-      rawAdhanDate: pTimes.asr,
-      rawJamaatDate: asrJamaat,
+      awwalWaqt: formatTime(pTimes.asr),
+      rawDate: pTimes.asr,
     },
     maghrib: {
       nameEn: 'Maghrib',
       nameUr: 'مغرب',
-      adhan: formatTime(pTimes.maghrib),
-      jamaat: formatTime(maghribJamaat),
-      rawAdhanDate: pTimes.maghrib,
-      rawJamaatDate: maghribJamaat,
+      awwalWaqt: formatTime(pTimes.maghrib),
+      rawDate: pTimes.maghrib,
     },
     isha: {
       nameEn: 'Isha',
       nameUr: 'عشاء',
-      adhan: formatTime(pTimes.isha),
-      jamaat: formatTime(ishaJamaat),
-      rawAdhanDate: pTimes.isha,
-      rawJamaatDate: ishaJamaat,
+      awwalWaqt: formatTime(pTimes.isha),
+      rawDate: pTimes.isha,
     },
     currentPrayer: currentPrayerKey,
     nextPrayer: nextPrayerKey,

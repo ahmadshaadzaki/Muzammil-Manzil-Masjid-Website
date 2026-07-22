@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, MapPin, LocateFixed, Compass, Sparkles, CheckCircle2, RotateCcw } from 'lucide-react';
+import { Clock, MapPin, LocateFixed, Compass, Sparkles, RotateCcw, Info } from 'lucide-react';
 import { getDailyPrayerSchedule, DailyPrayerScheduleResult } from '../utils/prayerTimes';
 
 interface DailyPrayerScheduleProps {
@@ -89,15 +89,15 @@ export const DailyPrayerSchedule: React.FC<DailyPrayerScheduleProps> = ({
         <div className="text-center max-w-3xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-semibold uppercase tracking-wider">
             <Clock className="w-3.5 h-3.5 text-amber-400" />
-            <span>Automatic Daily Calculation</span>
+            <span>Automatic Daily Calculation (Awwal Waqt)</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white">
-            {showUrdu ? 'روزانہ ۵ وقت کی نمازوں کا وقت' : 'Daily Prayer Times & Iqamah Schedule'}
+            {showUrdu ? 'روزانہ ۵ وقت کے اول وقت کے اوقات' : 'Daily Prayer Start Times (Awwal Waqt)'}
           </h2>
 
           <p className="text-emerald-200 text-sm leading-relaxed">
-            Calculated automatically using the <strong className="text-amber-300 font-semibold">University of Islamic Sciences, Karachi (Hanafi)</strong> method based on exact coordinates.
+            Displays calculated <strong className="text-amber-300 font-semibold">Awwal Waqt (beginning time)</strong> for each prayer, computed daily using the <strong className="text-amber-300 font-semibold">University of Islamic Sciences, Karachi (Hanafi)</strong> method based on exact coordinates.
           </p>
 
           {/* Location Bar & GPS Toggle */}
@@ -110,7 +110,7 @@ export const DailyPrayerSchedule: React.FC<DailyPrayerScheduleProps> = ({
             <button
               onClick={handleDetectLocation}
               className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95"
-              title="Detect my current location for local prayer times"
+              title="Detect my current location for local prayer start times"
             >
               <LocateFixed className="w-3.5 h-3.5 text-emerald-950" />
               <span>{isCustomLocation ? 'Update GPS Location' : 'Use My Live Location'}</span>
@@ -147,7 +147,7 @@ export const DailyPrayerSchedule: React.FC<DailyPrayerScheduleProps> = ({
           </div>
         )}
 
-        {/* 6 Prayer Cards Grid */}
+        {/* 6 Prayer Cards Grid (Awwal Waqt Only) */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
           {prayersList.map((item) => {
             const isCurrent = schedule.currentPrayer.toLowerCase() === item.key;
@@ -174,12 +174,12 @@ export const DailyPrayerSchedule: React.FC<DailyPrayerScheduleProps> = ({
               );
             }
 
-            const pData = item.data as { nameEn: string; nameUr: string; adhan: string; jamaat: string };
+            const pData = item.data as { nameEn: string; nameUr: string; awwalWaqt: string };
 
             return (
               <div
                 key={item.key}
-                className={`p-4 rounded-2xl border text-center space-y-2 transition-all transform-gpu ${
+                className={`p-4 sm:p-5 rounded-2xl border text-center space-y-2.5 transition-all transform-gpu ${
                   isCurrent
                     ? 'bg-gradient-to-b from-amber-500 to-amber-600 text-emerald-950 border-amber-300 shadow-xl ring-2 ring-amber-400 scale-105'
                     : isNext
@@ -193,38 +193,33 @@ export const DailyPrayerSchedule: React.FC<DailyPrayerScheduleProps> = ({
                   </span>
                 </div>
 
-                <h3 className={`font-serif font-bold text-lg ${isCurrent ? 'text-emerald-950' : 'text-white'}`}>
+                <h3 className={`font-serif font-bold text-lg sm:text-xl ${isCurrent ? 'text-emerald-950' : 'text-white'}`}>
                   {showUrdu ? pData.nameUr : pData.nameEn}
                 </h3>
 
-                <div className={`space-y-1 pt-1 border-t ${isCurrent ? 'border-emerald-950/20' : 'border-emerald-800'}`}>
-                  <div>
-                    <span className={`text-[10px] block ${isCurrent ? 'text-emerald-950/80' : 'text-emerald-300'}`}>Adhan</span>
-                    <p className={`text-base font-mono font-bold ${isCurrent ? 'text-emerald-950' : 'text-amber-300'}`}>
-                      {pData.adhan}
-                    </p>
-                  </div>
-
-                  <div>
-                    <span className={`text-[10px] block ${isCurrent ? 'text-emerald-950/80' : 'text-emerald-300'}`}>Jama'at</span>
-                    <p className={`text-base font-mono font-extrabold ${isCurrent ? 'text-emerald-950' : 'text-white'}`}>
-                      {pData.jamaat}
-                    </p>
-                  </div>
+                <div className={`pt-2 border-t space-y-1 ${isCurrent ? 'border-emerald-950/20' : 'border-emerald-800'}`}>
+                  <span className={`text-[11px] font-semibold uppercase tracking-wider block ${isCurrent ? 'text-emerald-950/90' : 'text-amber-300'}`}>
+                    {showUrdu ? 'اول وقت' : 'Awwal Waqt'}
+                  </span>
+                  <p className={`text-xl sm:text-2xl font-mono font-extrabold tracking-tight ${isCurrent ? 'text-emerald-950' : 'text-white'}`}>
+                    {pData.awwalWaqt}
+                  </p>
                 </div>
               </div>
             );
           })}
         </div>
 
-        {/* Method Note Footer */}
-        <div className="p-4 rounded-xl bg-emerald-900/50 border border-emerald-800 text-xs text-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
-          <div className="flex items-center gap-2">
-            <Compass className="w-4 h-4 text-amber-400 shrink-0" />
-            <span>Calculation Standard: <strong>{schedule.methodName}</strong></span>
+        {/* Clarification Note Footer */}
+        <div className="p-4 rounded-xl bg-emerald-900/50 border border-emerald-800 text-xs text-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          <div className="flex items-start gap-2">
+            <Info className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+            <span>
+              <strong>Awwal Waqt Only:</strong> Shows exact astronomical start times calculated daily using <strong>University of Islamic Sciences, Karachi (Hanafi)</strong>. Local masjid congregation (Jama'at) timings may be adjusted weekly by local masjid committees.
+            </span>
           </div>
-          <span className="text-[11px] text-amber-300/90 font-serif">
-            ✓ Timings update automatically every day at 12:00 AM midnight
+          <span className="text-[11px] text-amber-300 font-mono shrink-0">
+            ✓ Updates live daily at 00:00 AM
           </span>
         </div>
 
