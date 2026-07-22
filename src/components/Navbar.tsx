@@ -39,10 +39,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navItems = [
     { id: 'daily-prayer-schedule', labelEn: 'Daily Prayers', labelUr: 'اوقات نماز', icon: Clock },
-    { id: 'friday', labelEn: 'Friday Prayer', labelUr: 'نماز جمعہ', icon: Calendar },
-    { id: 'history', labelEn: 'History & Heritage', labelUr: 'تاریخ و معمار', icon: Info },
-    { id: 'directions', labelEn: 'Location & Map', labelUr: 'نقشہ و راستہ', icon: MapPin },
-    { id: 'etiquette', labelEn: 'Visitor Guide', labelUr: 'رہنمائے زائرین', icon: Navigation },
+    { id: 'friday-section', labelEn: 'Friday Prayer', labelUr: 'نماز جمعہ', icon: Calendar },
+    { id: 'history-section', labelEn: 'History & Heritage', labelUr: 'تاریخ و معمار', icon: Info },
+    { id: 'directions-section', labelEn: 'Location & Map', labelUr: 'نقشہ و راستہ', icon: MapPin },
+    { id: 'etiquette-section', labelEn: 'Visitor Guide', labelUr: 'رہنمائے زائرین', icon: Navigation },
   ];
 
   return (

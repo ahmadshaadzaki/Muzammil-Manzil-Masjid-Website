@@ -13,7 +13,7 @@ import { VisitorEtiquette } from './components/VisitorEtiquette';
 import { Footer } from './components/Footer';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<string>('friday');
+  const [activeTab, setActiveTab] = useState<string>('daily-prayer-schedule');
   const [showUrdu, setShowUrdu] = useState<boolean>(false);
   const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
@@ -38,6 +38,40 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // ScrollSpy IntersectionObserver to keep activeTab automatically synced with viewport
+  useEffect(() => {
+    const sectionIds = [
+      'daily-prayer-schedule',
+      'friday-section',
+      'history-section',
+      'directions-section',
+      'etiquette-section',
+    ];
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -50% 0px',
+      threshold: 0,
+    };
+
+    const handleIntersect: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveTab(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     if (isDarkMode) {
@@ -51,9 +85,9 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleTabNavigate = (tab: string) => {
-    setActiveTab(tab);
-    const el = document.getElementById(tab) || document.getElementById(`${tab}-section`);
+  const handleTabNavigate = (tabId: string) => {
+    setActiveTab(tabId);
+    const el = document.getElementById(tabId) || document.getElementById(`${tabId}-section`);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
