@@ -4,6 +4,7 @@ import { ChevronUp } from 'lucide-react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { FridayPrayerSection } from './components/FridayPrayerSection';
+import { DailyPrayerSchedule } from './components/DailyPrayerSchedule';
 import { AnnouncementsBoard } from './components/AnnouncementsBoard';
 import { HistoryArchitecture } from './components/HistoryArchitecture';
 import { QiblaCompass } from './components/QiblaCompass';
@@ -52,8 +53,7 @@ export default function App() {
 
   const handleTabNavigate = (tab: string) => {
     setActiveTab(tab);
-    const elementId = `${tab}-section`;
-    const el = document.getElementById(elementId);
+    const el = document.getElementById(tab) || document.getElementById(`${tab}-section`);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
@@ -90,6 +90,19 @@ export default function App() {
           onNavigateTo={handleTabNavigate}
           showUrdu={showUrdu}
         />
+
+        {/* Automatic Daily Prayer Schedule (University of Karachi Method + GPS) */}
+        <motion.div
+          variants={sectionVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+        >
+          <DailyPrayerSchedule
+            showUrdu={showUrdu}
+            isDarkMode={isDarkMode}
+          />
+        </motion.div>
 
         {/* Friday Prayer Schedule */}
         <motion.div
