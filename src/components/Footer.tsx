@@ -57,7 +57,7 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-4 space-y-2 text-xs">
             <h4 className="font-serif font-bold text-white text-sm">Key Information</h4>
             <ul className="space-y-1.5 text-emerald-300">
-              <li>📍 Address: Dodhpur, Aligarh, UP 202001</li>
+              <li>📍 Address: {MOSQUE_INFO.location}</li>
               <li>🏛️ Heritage: Built c. 1910s by Nawab Sir Muzammilullah Khan Sherwani</li>
               <li>🕌 Friday Prayer: 1:45 PM Khutbah & Jama'at</li>
               <li>♿ Accessibility: Wheelchair Ramp & Wudu Courtyard</li>

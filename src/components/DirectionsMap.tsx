@@ -7,7 +7,7 @@ export const DirectionsMap: React.FC<{ isDarkMode?: boolean }> = ({ isDarkMode =
   const [copied, setCopied] = useState(false);
 
   // Direct Google Maps Directions link for turn-by-turn navigation
-  const directDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${MOSQUE_INFO.coordinates.lat},${MOSQUE_INFO.coordinates.lng}&destination_place_id=Muzammil+Manzil+Masjid`;
+  const directDirectionsUrl = MOSQUE_INFO.googleMapsUrl;
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(MOSQUE_INFO.location);
@@ -107,7 +107,7 @@ export const DirectionsMap: React.FC<{ isDarkMode?: boolean }> = ({ isDarkMode =
               <div className="relative z-10 flex items-center justify-between">
                 <span className="px-3 py-1 rounded-full bg-emerald-900/90 border border-emerald-700 text-amber-300 text-[11px] font-mono font-bold flex items-center gap-1.5 shadow-sm">
                   <LocateFixed className="w-3.5 h-3.5 text-amber-400" />
-                  <span>27.9048° N, 78.0772° E</span>
+                  <span>{MOSQUE_INFO.coordinates.lat}° N, {MOSQUE_INFO.coordinates.lng}° E ({MOSQUE_INFO.addressPlusCode})</span>
                 </span>
                 <span className="text-[10px] text-stone-400 uppercase font-semibold">Dodhpur Precinct</span>
               </div>

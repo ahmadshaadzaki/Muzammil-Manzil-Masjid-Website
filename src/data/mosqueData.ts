@@ -3,11 +3,12 @@ import { Notice, FAQItem, LandmarkDistance, GalleryItem } from '../types';
 export const MOSQUE_INFO = {
   nameEn: 'Muzammil Manzil Masjid',
   nameUrdu: 'مسجد مزمل منزل',
-  location: 'Dodhpur, Aligarh, Uttar Pradesh 202001, India',
-  googleMapsUrl: 'https://maps.app.goo.gl/uEsbwS6xTX8hnwsD8',
+  addressPlusCode: 'W34J+G9P',
+  location: 'W34J+G9P, Dudhpur Road, Muzammil Manzil, Dodhpur, Aligarh, Uttar Pradesh 202001',
+  googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=W34J%2BG9P%2C+Dudhpur+Road%2C+Muzammil+Manzil%2C+Dodhpur%2C+Aligarh%2C+Uttar+Pradesh+202001',
   coordinates: {
-    lat: 27.9048,
-    lng: 78.0772,
+    lat: 27.90617,
+    lng: 78.08078,
   },
   establishedEra: 'Early 20th Century (c. 1910s)',
   founder: 'Nawab Sir Mohammad Muzammilullah Khan Sherwani (KCI)',
