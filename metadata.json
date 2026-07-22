@@ -1,0 +1,6 @@
+{
+  "name": "Muzammil Manzil Masjid",
+  "description": "Informative community portal, prayer times, history, architectural heritage, and visitor guide for Muzammil Manzil Masjid in Dodhpur, Aligarh.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
