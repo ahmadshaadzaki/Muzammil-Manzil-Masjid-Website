@@ -84,8 +84,8 @@ export const Footer: React.FC = () => {
         {/* Copyright & Credit Footer */}
         <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-emerald-400/80 gap-2">
           <p>© {new Date().getFullYear()} Muzammil Manzil Masjid • Dodhpur, Aligarh</p>
-          <p className="lowercase font-mono text-[11px] text-amber-300/95 bg-amber-500/10 px-2.5 py-1 rounded-md border border-amber-500/20 font-medium">
-            ahmad shaad zaki (software engineer-webseccloud)
+          <p className="font-serif text-xs text-amber-300 font-medium tracking-wide">
+            Made with ❤️ in Aligarh by AsCodes.
           </p>
         </div>
 
